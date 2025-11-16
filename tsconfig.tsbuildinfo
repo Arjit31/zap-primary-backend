@@ -1,0 +1,1 @@
+{"root":["./src/authMiddleware.ts","./src/config.ts","./src/index.ts","./src/db/index.ts","./src/routers/userRouter.ts","./src/routers/zapRouter.ts","./src/types/index.ts"],"version":"5.8.3"}

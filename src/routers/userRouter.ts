@@ -19,7 +19,7 @@ router.post("/signup", async (req, res) => {
             email: parsedData.data.email,
         },
     });
-    if (!isUserExist) {
+    if (isUserExist) {
         res.status(400).json({ message: "user exists" });
         return;
     }
@@ -60,15 +60,25 @@ router.post("/signin", async (req, res) => {
         JWT_PASSWORD
     );
 
-    res.json({
+    return res.json({
         token: token,
         message: "signin successful",
     });
 });
 
-router.get("/:userId", authMiddleware, (req, res) => {
-    console.log("user info route");
-    res.json("hi");
+router.get("/", authMiddleware, async (req, res) => {
+    //@ts-ignore
+    const id = req.id;
+    const user = await prisma.user.findFirst({
+        where: {
+            id: id
+        },
+        select: {
+            email: true,
+            name: true
+        }
+    })
+    return res.json(user);
 });
 
 export const userRouter = router;
