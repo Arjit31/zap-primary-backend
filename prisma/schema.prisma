@@ -19,13 +19,16 @@ model User {
   name     String
   email    String
   password String
+  zaps     Zap[]
 }
 
 model Zap {
   id       String   @id @default(uuid())
+  userId   String
   triggers Trigger?
   actions  Action[]
   zapRuns  ZapRun[]
+  user     User     @relation(fields: [userId], references: [id])
 }
 
 model Trigger {
@@ -43,6 +46,7 @@ model Action {
   sortOrder Int             @default(0)
   type      AvailableAction @relation(fields: [typeId], references: [id])
   zap       Zap             @relation(fields: [zapId], references: [id])
+
   @@unique([zapId, sortOrder]) // unique sort order per zap id
 }
 
