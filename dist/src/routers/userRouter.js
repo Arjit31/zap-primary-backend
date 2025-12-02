@@ -27,11 +27,13 @@ router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(400).json({ message: "invalid input" });
         return;
     }
+    console.log(body, parsedData);
     const isUserExist = yield db_1.prisma.user.findFirst({
         where: {
             email: parsedData.data.email,
         },
     });
+    console.log(body, parsedData);
     if (isUserExist) {
         res.status(400).json({ message: "user exists" });
         return;
