@@ -22,7 +22,8 @@ router.post("/", authMiddleware, async (req, res) => {
                 userId: userId,
                 triggers: {
                     create: {
-                        typeId: parsedData.data.availableTriggerId
+                        typeId: parsedData.data.availableTriggerId,
+                        // metadata: parsedData.data.triggerMetadata
                     }
                 },
                 actions: {
@@ -30,7 +31,8 @@ router.post("/", authMiddleware, async (req, res) => {
                     // but in case of () => ({}) it simply returns the block as an object
                     create: parsedData.data.actions.map((action, ind) => ({
                         typeId: action.actionId,
-                        sortOrder: ind
+                        sortOrder: ind,
+                        metadata: action.availableActionMetadata
                     }))
                 }
             }
