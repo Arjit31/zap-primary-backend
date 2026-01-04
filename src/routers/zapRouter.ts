@@ -15,6 +15,8 @@ router.post("/", authMiddleware, async (req, res) => {
             message: "Invalid Input"
         })
     }
+
+    console.log(parsedData, body, parsedData.data.actions[0].availableActionMetadata);
     
     const zap = await prisma.$transaction(async tx => {
         const zap = await tx.zap.create({
@@ -39,6 +41,7 @@ router.post("/", authMiddleware, async (req, res) => {
         })
         return zap;
     })
+    console.log(zap);
     return res.json({zap})
 })
 
