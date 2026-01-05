@@ -4,6 +4,7 @@ import { SigninSchema, SignupSchema } from "../types";
 import { prisma } from "../db";
 import jwt from "jsonwebtoken";
 import { JWT_PASSWORD } from "../config";
+import bcrypt from "bcryptjs";
 
 const router = Router();
 
@@ -25,11 +26,12 @@ router.post("/signup", async (req, res) => {
         res.status(400).json({ message: "user exists" });
         return;
     }
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(parsedData.data.password, salt);
     await prisma.user.create({
         data: {
             email: parsedData.data.email,
-            // hash the password
-            password: parsedData.data.password,
+            password: hash,
             name: parsedData.data.name,
         },
     });
@@ -48,10 +50,10 @@ router.post("/signin", async (req, res) => {
     const user = await prisma.user.findFirst({
         where: {
             email: parsedData.data.email,
-            password: parsedData.data.password,
         },
     });
-    if (!user) {
+    const isPasswordCorrect = await bcrypt.compare(parsedData.data.password, user?.password + "");
+    if (!user || !isPasswordCorrect) {
         res.status(400).json({ message: "wrong credentials" });
         return;
     }
