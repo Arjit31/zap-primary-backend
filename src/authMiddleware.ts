@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import { JWT_PASSWORD } from "./config";
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction){
-    const token = req.headers.authorization + "";
+    const token = req.cookies.token;
     console.log(token)
     try {
         const payload = jwt.verify(token, JWT_PASSWORD)

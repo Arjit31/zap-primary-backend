@@ -52,7 +52,10 @@ router.post("/signin", async (req, res) => {
             email: parsedData.data.email,
         },
     });
-    const isPasswordCorrect = await bcrypt.compare(parsedData.data.password, user?.password + "");
+    const isPasswordCorrect = await bcrypt.compare(
+        parsedData.data.password,
+        user?.password + ""
+    );
     if (!user || !isPasswordCorrect) {
         res.status(400).json({ message: "wrong credentials" });
         return;
@@ -75,14 +78,20 @@ router.get("/", authMiddleware, async (req, res) => {
     const id = req.id;
     const user = await prisma.user.findFirst({
         where: {
-            id: id
+            id: id,
         },
         select: {
             email: true,
-            name: true
-        }
-    })
+            name: true,
+        },
+    });
     return res.json(user);
+});
+
+router.get("/auth", authMiddleware, async (req, res) => {
+    res.json({
+        message: "Authorised",
+    }).status(200);
 });
 
 export const userRouter = router;
