@@ -66,13 +66,17 @@ router.post("/signin", async (req, res) => {
         },
         JWT_PASSWORD
     );
-    res.cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 24 * 60 * 60 * 1000,
-        path: "/"
-    });
+    // res.cookie("token", token, {
+    //     httpOnly: true,
+    //     secure: true,
+    //     sameSite: "none",
+    //     maxAge: 24 * 60 * 60 * 1000,
+    //     path: "/"
+    // });
+    res.setHeader(
+        'Set-Cookie',
+        `token=${token}; HttpOnly; Secure; SameSite=None; Partitioned; Max-Age=${24 * 60 * 60}; Path=/`
+    );
     return res.json({
         token: token,
         message: "signin successful",
