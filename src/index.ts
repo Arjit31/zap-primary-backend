@@ -23,6 +23,7 @@ app.use(cookieParser());
 
 app.get("/", (req, res) => {
     console.log("pinged");
+    console.log(process.env.FRONTEND_URL)
     res.status(200).send("OK");
 });
 
