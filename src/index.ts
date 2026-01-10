@@ -22,8 +22,8 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
-    console.log("root");
-    res.json("root");
+    console.log("pinged");
+    res.status(200).send("OK");
 });
 
 app.use("/api/v1/user", userRouter);
@@ -32,9 +32,9 @@ app.use("/api/v1/trigger", triggerRouter);
 app.use("/api/v1/action", actionRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
-  res.status(500).send('Internal Server Error');
-})
+    console.error(err.stack);
+    res.status(500).send("Internal Server Error");
+});
 
 app.listen(5000, () => {
     console.log("primary-backend running on 5000");
