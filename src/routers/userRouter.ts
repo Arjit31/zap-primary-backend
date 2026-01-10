@@ -66,7 +66,11 @@ router.post("/signin", async (req, res) => {
         },
         JWT_PASSWORD
     );
-
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+    });
     return res.json({
         token: token,
         message: "signin successful",
